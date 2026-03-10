@@ -54,7 +54,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('category.edit', compact('category')); 
+        //yang category itu nama variabel yang dikirim ke view, yang category yang dalam kurung itu parameter yang diambil dari route
     }
 
     /**
@@ -62,7 +63,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([ //ini untuk si validasi data yang masuk ke database
+            'name' => 'required|string|max:60', //wajib di isi 
+            'description' => 'nullable|string|max:150',  //boleh kosong
+        ]);
+
+        $category->update($request->all());
+
+        return redirect()->route('category.index');
     }
 
     /**
@@ -70,6 +78,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->route('category.index');
     }
 }

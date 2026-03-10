@@ -21,25 +21,30 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Category Form</a>
+                  <a href="#">Edit Form</a>
                 </li>
               </ul>
             </div>
             {{-- Tambahin isi nya di bagian ini buat isi nya --}}
             <div class="card">
               <div class="card-body">
-                <form action="{{ route('category.store') }}" method="POST">
-                  {{-- tiap form wajib ada csrf --}}
-                  @csrf
+                <form action="" method="POST">
+                  @csrf 
+                  @method('PUT')
+                  <div class=form-group>
+                    <label for="idcategory">ID</label>
+                    <input type="number" class="form-control" id="idcategory" name="idcategory" readonly value="{{ $category->idcategory }}">
+                  </div> 
                   <div class=form-group>
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter category name"> {{-- name samain dengan nama kolom --}}
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter category name" autofocus required value="{{ $category->name }}" maxlength="60"> {{-- name samain dengan nama kolom --}}
                   </div> 
                   <div class=form-group>
                     <label for="description">Description</label>
-                    <textarea type="text" class="form-control" id="description" rows="2" maxlength="150" name="description"></textarea>
+                    <textarea type="text" class="form-control" id="description" rows="2" maxlength="150" name="description">{{ $category->description }}
+                    </textarea>
                   </div>
-                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button type="submit" class="btn btn-primary">Update</button>
                 </form>
               </div>
             </div>

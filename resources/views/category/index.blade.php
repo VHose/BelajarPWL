@@ -37,14 +37,23 @@
                       <th>ID</th>
                       <th>Name</th>
                       <th>Description</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach ( $a as $category )
                       <tr>
-                        <td>{{ $category->id }}</td>
+                        <td>{{ $category->idcategory }}</td>
                         <td>{{ $category->name }}</td>
                         <td>{{ $category->description }}</td>
+                        <td>
+                          <a href="{{ route('category.edit', $category->idcategory) }}" class="btn btn-warning btn-sm">Edit</a>
+                          <form action="{{ route('category.destroy', $category->idcategory) }}" method="POST" style="display: inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this category?')">Delete</button>
+                          </form>
+                        </td>
                       </tr>
                     @endforeach
                   </tbody>

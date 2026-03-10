@@ -11,8 +11,17 @@ Route::get('/', function () {
 
 Route::get("/category", [CategoryController::class, 'index'])-> name ('category.index');
 
+// untuk nambahin
 Route::get("/category/create", [CategoryController::class, 'create'])-> name ('category.create');
 Route::post("/category/create", [CategoryController::class, 'store'])-> name ('category.store');
+
+// untuk update
+Route::get("/category/edit/{category}", [CategoryController::class, 'edit'])-> name ('category.edit');
+Route::put("/category/edit/{category}", [CategoryController::class, 'update'])-> name ('category.update');
+
+// untuk delete
+Route::delete("/category/delete/{category}", [CategoryController::class, 'destroy'])-> name ('category.destroy');
+
 
 Route::get('/student', [StudentController::class, 'index']);
 

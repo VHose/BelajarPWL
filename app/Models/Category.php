@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected $table = 'category'; //ini buat cek agar gk default ke categories
+    protected $primaryKey = 'idcategory'; // Set primary key to 'idcategory'
 
     protected $fillable = [
         'name',

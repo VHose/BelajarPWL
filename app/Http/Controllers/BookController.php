@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class BookController extends Controller
 {
@@ -12,7 +13,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        $books = Book::all();
+        return view('book.index', compact('books'));
     }
 
     /**
@@ -20,7 +22,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all(); // Ambil semua kategori untuk dropdown
+        return view('book.create', compact('categories'));
     }
 
     /**
