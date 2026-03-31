@@ -54,7 +54,8 @@
                                     <td>{{ $book->isbn }}</td>
                                     <td>
                                         @if ($book->cover)
-                                            <img src="{{ asset('storage/uploads/' . $book->cover) }}" alt="{{ $book->title }}" width="100">
+                                            <img class="img-thumbnail" src="{{ asset('storage/uploads/' . $book->cover) }}"
+                                                alt="{{ $book->title }}" width="100">
                                         @endif
                                     </td>
                                     <td>{{ $book->title }}</td>

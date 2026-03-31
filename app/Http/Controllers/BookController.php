@@ -106,6 +106,10 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
+        $coverPath = public_path('storage/uploads/' . $book->cover);
+        if (file_exists($coverPath)) {
+            unlink($coverPath); // Hapus file cover dari storage
+        }
 
         return redirect()->route('book.index');
     }
