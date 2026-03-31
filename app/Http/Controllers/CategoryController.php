@@ -32,7 +32,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([ //ini untuk si validasi data yang masuk ke database
-            'name' => 'required|string|max:60', //wajib di isi 
+            'name' => 'required|string|max:1', //wajib di isi 
             'description' => 'nullable|string|max:150',  //boleh kosong
         ]);
 
