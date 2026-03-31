@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     protected $table = 'book'; //ini buat cek agar gk default ke books
-    
+
     protected $fillable = [
         'isbn',
         'title',
@@ -15,10 +15,15 @@ class Book extends Model
         'description',
         'cover',
         'publish_year',
-        'category_id',
+        'category_idcategory',
     ];
 
     protected $primaryKey = 'isbn'; // Set primary key to 'isbn'
     protected $keyType = 'string'; // Set key type to string
     public $incrementing = false; // Disable auto-incrementing
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_idcategory');
+    }
 }

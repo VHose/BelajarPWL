@@ -13,8 +13,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
-        return view('book.index', compact('books'));
+        $b = Book::with('category')->get(); // Ambil semua data buku beserta kategori terkait
+        return view('book.index', compact('b'));
     }
 
     /**
@@ -31,7 +31,26 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'isbn' => 'required|string|max:20|unique:book,isbn',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:60',
+            'description' => 'nullable|string|max:150',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'publish_year' => 'required|integer|min:1000|max:' . date('Y'),
+            'category_idcategory' => 'required|exists:category,idcategory',
+        ]);
+        
+
+        $coverPath = null;
+        if ($request->hasFile('cover')) {
+            $validateData['cover'] = $validateData['isbn'] . '.' . $request->file('cover')->getClientOriginalExtension();
+            $request->file('cover')->storeAs('uploads', $validateData['cover'], 'public');
+        }
+
+        Book::create($validateData + ['cover' => $coverPath]);
+
+        return redirect()->route('book.index');
     }
 
     /**
@@ -47,7 +66,9 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        $categories = Category::all(); // Ambil semua kategori untuk dropdown
+        return view('book.edit', compact('book', 'categories')); 
+        //yang book itu nama variabel yang dikirim ke view, yang book yang dalam kurung itu parameter yang diambil dari route
     }
 
     /**
@@ -55,7 +76,28 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $validateData = $request->validate([ //ini untuk si validasi data yang masuk ke database
+            'title' => 'required|string|max:255',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'author' => 'required|string|max:60',
+            'description' => 'nullable|string|max:150',
+            'publish_year' => 'required|integer|min:1000|max:' . date('Y')
+        ]);
+
+        $book->update($request->all());
+
+        $coverPath = $book->cover; // Simpan path cover lama
+        if ($request->hasFile('cover')) {
+            $validateData['cover'] = $book->isbn . '.' . $request->file('cover')->getClientOriginalExtension();
+            $request->file('cover')->storeAs('uploads', $validateData['cover'], 'public');
+        }
+
+        $coverPath = $validateData['cover'] ?? $coverPath; // Gunakan path cover baru jika ada, jika tidak gunakan yang lama
+        $book->update(['cover' => $coverPath]); // Update path cover di database
+
+
+        return redirect()->route('book.index');
+
     }
 
     /**
@@ -63,6 +105,8 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+
+        return redirect()->route('book.index');
     }
 }
